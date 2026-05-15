@@ -1,3 +1,7 @@
+Autor: Douglas Ficagna
+E-mail: douglas.elf@outlook.com
+LinkedIn: https://www.linkedin.com/in/douglas-ficagna/
+
 # Synchronous Generator Capability Curve Calculation  
 ## Generic Hydroelectric Generator Model with Excitation Limiters
 
