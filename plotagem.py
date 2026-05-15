@@ -1,0 +1,70 @@
+import matplotlib.pyplot as plt
+from matplotlib.widgets import Cursor
+import numpy as np
+
+
+def plot_curva_saturada(df1, df3, df4, df5, df6, Vterm, Sb, Sn, Pmin, Pmax, P_op, Q_op):
+#def plot_curva_saturada(df1, df3, df4, df5, df6, Vterm, Sb, Sn, Pmin, Pmax):
+    plt.rcParams["font.family"] = "Times New Roman"
+    plt.figure(figsize=(7,5))
+    #plt.plot(df["Qsat"]*Sn/Sb, df["P"]*Sn/Sb, label="IFD")
+    plt.plot(df1["Qsat"]*Sn/Sb, df1["P"]*Sn/Sb, color = "black", label="1 - Lim. OEL")
+    plt.plot(df6["Q_SCL"]*Sn/Sb, df6["P_SCL"]*Sn/Sb, color = "blue", label="2 - SCL") 
+    #plt.plot(df2["Qsat"]*Sn/Sb, df2["P"]*Sn/Sb, label="OEL Instantâneo")
+    #plt.plot(df3["Qsat"]*Sn/Sb, df3["P"]*Sn/Sb, color = "blue", label="5 - MEL")
+    #plt.plot(df7["Qsat"]*Sn/Sb, df7["P"]*Sn/Sb, color = "brown", linestyle = "--", label="2000 A")
+    #plt.plot(df8["Qsat"]*Sn/Sb, df8["P"]*Sn/Sb, color = "green", linestyle = "--", label="1750 A")
+    #plt.plot(df4["Q_ANG_CARGA"]*Sn/Sb, df4["P_ANG_CARGA"]*Sn/Sb, color = "darkgreen", linestyle = "--", label="L. Ang. Carga  - Prop. (24°, 0.37)")
+    #plt.plot(df4["Q_AUX2"]*Sn/Sb, df4["P_AUX2"]*Sn/Sb, color = "darkgreen", linestyle = "--", label="Ângulo de Carga - 1.5°")
+    #plt.plot(df4["Q_AUX1"]*Sn/Sb, df4["P_AUX1"]*Sn/Sb, color = "darkgreen", label="L. Ang. Carga")
+    #plt.plot(df4["Q_UEL"]*Sn/Sb, df4["P_UEL"]*Sn/Sb, color = "red", linestyle = "--",  label="L. Sub. Corr. Campo - Prop. (62°)")
+    #plt.plot(df4["Q_UEL2"]*Sn/Sb, df4["P_UEL"]*Sn/Sb, color = "red", label="6 - UEL")
+    #plt.plot(df5["Q_nominal"], df5["P_nominal"], "--", label="Nominal")
+    #plt.plot(df5["Q_polar"]*Sn/Sb, df5["P_polar"]*Sn/Sb, "--", label="Sal. Polar")
+    plt.plot(df5["Q_pratica"]*Sn/Sb, df5["P_pratica"]*Sn/Sb, color = "orange", linestyle = "--", label="3 - Estab. Prática")
+    plt.plot(df5["Q_estab"]*Sn/Sb, df5["P_estab"]*Sn/Sb, color = "purple", linestyle = "--", label="4 - Estab. Teórica")
+    plt.plot(df3["Qsat"]*Sn/Sb, df3["P"]*Sn/Sb, color = "brown", label="5 - MEL")
+    plt.plot(df4["Q_UEL2"]*Sn/Sb, df4["P_UEL"]*Sn/Sb, color = "red", label="6 - UEL")
+    plt.plot(df4["Q_AUX1"]*Sn/Sb, df4["P_AUX1"]*Sn/Sb, color = "darkgreen", label="7 - L. Ang. Carga")
+
+    #plt.scatter(Q_op/Sb, P_op/Sb, color="red", s=80, marker="o", label="SCL base 766 MVA")
+    #plt.scatter(Q2/Sb, P2/Sb, color="red", s=80, marker="o")
+    #plt.scatter(Q3/Sb, P3/Sb, color="red", s=80, marker="o")    
+    plt.axhline(Pmax/Sb, color="black", linestyle="--", linewidth=1, label="8 - Produção da Turbina Máx.")
+    plt.axhline(Pmin/Sb, color="blue", linestyle="--", linewidth=1, label="9 - Produção da Turbina Min.")    
+    plt.xlim(-1.5, 1.4)
+    plt.ylim(0.0, 1.10)
+    plt.xlabel("Potência Reativa Q (pu)")
+    plt.ylabel("Potência Ativa P (pu)")
+    plt.title(f"Curva 1 pu = {Sb:.0f} MVA - V = {Vterm:.2f} kV ({Vterm/13.8:.2f} pu)")
+    plt.grid(True, linestyle="--", alpha=0.7)
+    plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+    plt.gca().set_aspect('equal', adjustable='box')
+    plt.tight_layout()  # ajusta layout para caber tudo
+    plt.savefig(f"Curva_com_saturação_{Vterm:.1f}kV.png", dpi=300, bbox_inches="tight")
+
+def plot_curva_n_saturada(df, df1, df2, df3, df4, df5, df6, df7, df8, Vterm, Sb, Sn, P_op, Q_op):
+    plt.figure(figsize=(7,5))
+    plt.plot(df["Qtrad"]*Sn/Sb, df["P"]*Sn/Sb, label="IFD")
+    plt.plot(df1["Qtrad"]*Sn/Sb, df1["P"]*Sn/Sb, label="OELTH")
+    plt.plot(df2["Qtrad"]*Sn/Sb, df2["P"]*Sn/Sb, label="OELPK")
+    plt.plot(df3["Qtrad"]*Sn/Sb, df3["P"]*Sn/Sb, label="MEL")
+    plt.plot(df7["Qtrad"]*Sn/Sb, df8["P"]*Sn/Sb, label="MEL: 2000 A")
+    plt.plot(df8["Qtrad"]*Sn/Sb, df8["P"]*Sn/Sb, label="MEL: 1750 A")
+    plt.plot(df4["Q_ANG_CARGA"]*Sn/Sb, df4["P_ANG_CARGA"]*Sn/Sb, label="Ângulo de Carga")
+    plt.plot(df4["Q_UEL"]*Sn/Sb, df4["P_UEL"]*Sn/Sb, label="UEL")
+    plt.plot(df5["Q_nominal"], df5["P_nominal"], "--", label="Nominal")
+    plt.plot(df5["Q_polar"]*Sn/Sb, df5["P_polar"]*Sn/Sb, "--", label="Sal. Polar")
+    plt.plot(df5["Q_estab"]*Sn/Sb, df5["P_estab"]*Sn/Sb, "--", label="Estab. Teórica")
+    plt.plot(df5["Q_pratica"]*Sn/Sb, df5["P_pratica"]*Sn/Sb, "--", label="Estab. Prática")
+    plt.plot(df6["Q_SCL"]*Sn/Sb, df6["P_SCL"]*Sn/Sb, "--", label="SCL")  
+    plt.scatter(Q_op/Sb, P_op/Sb, color="red", s=80, marker="o", label="Ponto Operação")
+    plt.xlim(-1.5, 1.4)
+    plt.ylim(0, 1.15)
+    plt.xlabel("Potência Reativa Q (pu)")
+    plt.ylabel("Potência Ativa P (pu)")
+    plt.title(f"Curva Não Saturada - V = {Vterm:.2f} kV")
+    plt.grid(True, linestyle="--", alpha=0.7)
+    plt.legend(loc="center left", bbox_to_anchor=(1, 0.5))
+    plt.tight_layout()  # ajusta layout para caber tudo
+    plt.savefig(f"Curva_sem_saturação_{Vterm:.1f}kV.png", dpi=300, bbox_inches="tight")
