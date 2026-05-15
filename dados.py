@@ -1,5 +1,4 @@
-# Dados Genéricos de Gerador Síncrono para Repositório Público
-# Baseado em valores típicos de literatura (hidrogerador genérico 100 MVA)
+# Dados Genéricos de Gerador Síncrono
 
 import numpy as np
 import matplotlib.pyplot as plt
